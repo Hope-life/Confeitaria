@@ -15,6 +15,13 @@
             </div>
         @endif
 
+        <!-- Exibe a mensagem de erro de estoque insuficiente -->
+        @if(session('message'))
+            <div class="alert alert-danger mb-3">
+                {{ session('message') }}
+            </div>
+        @endif
+
         <!-- Formulário para criar pedido -->
         <form action="{{ route('pedidos.store') }}" method="POST">
             @csrf
@@ -35,10 +42,11 @@
             <!-- Produto -->
             <div class="form-group mt-3">
                 <label for="produto_id">Produto</label>
-                <select name="produto_id" id="produto_id" class="form-control" required>
+                <select name="produto_id" id="produto_id" class="form-control" required onchange="atualizarPrecoUnitario()">
                     <option value="">Selecione um Produto</option>
                     @foreach($produtos as $produto)
-                        <option value="{{ $produto->id }}" {{ old('produto_id') == $produto->id ? 'selected' : '' }}>
+                        <option value="{{ $produto->id }}" {{ old('produto_id') == $produto->id ? 'selected' : '' }}
+                            data-preco="{{ number_format($produto->preco_unitario, 2, ',', '.') }}">
                             {{ $produto->nome }} (R$ {{ number_format($produto->preco_unitario, 2, ',', '.') }}) - Estoque: {{ $produto->estoque }}
                         </option>
                     @endforeach
@@ -57,16 +65,22 @@
                 <input type="number" name="quantidade" id="quantidade" class="form-control" value="{{ old('quantidade') }}" required>
             </div>
 
-            <!-- Data de Início -->
+            <!-- Preço Unitário -->
             <div class="form-group mt-3">
-                <label for="data_inicio">Data de Início</label>
-                <input type="date" name="data_inicio" id="data_inicio" class="form-control" value="{{ old('data_inicio') }}" required>
+                <label for="preco_unitario">Preço Unitário</label>
+                <input type="text" name="preco_unitario" id="preco_unitario" class="form-control" value="{{ old('preco_unitario') }}" required readonly>
             </div>
 
-            <!-- Data Final -->
+            <!-- Subtotal -->
             <div class="form-group mt-3">
-                <label for="data_final">Data Final</label>
-                <input type="date" name="data_final" id="data_final" class="form-control" value="{{ old('data_final') }}" required>
+                <label for="subtotal">Subtotal</label>
+                <input type="text" name="subtotal" id="subtotal" class="form-control" value="{{ old('subtotal') }}" required readonly>
+            </div>
+
+            <!-- Data de Início -->
+            <div class="form-group mt-3">
+                <label for="data_inicio">Data de Criação</label>
+                <input type="date" name="data_inicio" id="data_inicio" class="form-control" value="{{ old('data_inicio') }}" required>
             </div>
 
             <!-- Método de Pagamento -->
@@ -116,6 +130,28 @@
             } else {
                 document.getElementById('endereco_cliente').value = '';
             }
+        }
+
+        // Função para atualizar o preço unitário automaticamente ao selecionar o produto
+        function atualizarPrecoUnitario() {
+            var produtoId = document.getElementById('produto_id').value;
+            var produtoSelecionado = document.querySelector(`#produto_id option[value="${produtoId}"]`);
+            if (produtoSelecionado) {
+                var preco = produtoSelecionado.getAttribute('data-preco');
+                document.getElementById('preco_unitario').value = preco;
+                atualizarSubtotal();
+            }
+        }
+
+        // Função para calcular o subtotal ao alterar a quantidade ou preço
+        document.getElementById('quantidade').addEventListener('input', atualizarSubtotal);
+        document.getElementById('preco_unitario').addEventListener('input', atualizarSubtotal);
+
+        function atualizarSubtotal() {
+            var quantidade = parseFloat(document.getElementById('quantidade').value) || 0;
+            var precoUnitario = parseFloat(document.getElementById('preco_unitario').value.replace(',', '.')) || 0;
+            var subtotal = quantidade * precoUnitario;
+            document.getElementById('subtotal').value = subtotal.toFixed(2);
         }
     </script>
 @endsection

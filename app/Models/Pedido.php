@@ -23,7 +23,6 @@ class Pedido extends Model
         'metodo_pagamento',
         'observacoes',
         'data_inicio',
-        'data_final',
         'endereco_cliente',
     ];
 

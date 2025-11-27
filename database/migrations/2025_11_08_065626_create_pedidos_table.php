@@ -20,7 +20,7 @@ class CreatePedidosTable extends Migration
             $table->enum('metodo_pagamento', ['CREDITO', 'DEBITO', 'PIX']);  // Método de pagamento
             $table->text('observacoes')->nullable();
             $table->date('data_inicio');  // Data de início do pedido
-            $table->date('data_final');  // Data final de entrega
+            
             $table->string('endereco_cliente');  // Endereço do cliente no pedido
             $table->timestamps();
 

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container mt-4">
         <h1 class="text-center mb-4">Pedidos</h1>
     
         <!-- Exibe a mensagem de sucesso -->

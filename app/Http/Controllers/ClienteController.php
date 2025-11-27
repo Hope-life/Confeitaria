@@ -66,7 +66,7 @@ class ClienteController extends Controller
    // Preenche o edereço automaticamente
 public function getEndereco($id)
 {
-    $cliente = \App\Models\Cliente::findOrFail($id);
+    $cliente = Cliente::findOrFail($id);
     return response()->json(['endereco' => $cliente->endereco]);
 }
 

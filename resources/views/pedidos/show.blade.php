@@ -39,13 +39,10 @@
                     <td>{{ $pedido->observacoes }}</td>
                 </tr>
                 <tr>
-                    <th>Data de Início:</th>
+                    <th>Data de Criação:</th>
                     <td>{{ $pedido->data_inicio }}</td>
                 </tr>
-                <tr>
-                    <th>Data Final:</th>
-                    <td>{{ $pedido->data_final }}</td>
-                </tr>
+                
             </table>
         </div>
 

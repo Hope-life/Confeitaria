@@ -58,14 +58,8 @@
 
             <!-- Data de Início -->
             <div class="form-group">
-                <label for="data_inicio">Data de Início</label>
+                <label for="data_inicio">Data de Criação</label>
                 <input type="date" name="data_inicio" id="data_inicio" class="form-control" value="{{ old('data_inicio', $pedido->data_inicio) }}" required>
-            </div>
-
-            <!-- Data Final -->
-            <div class="form-group">
-                <label for="data_final">Data Final</label>
-                <input type="date" name="data_final" id="data_final" class="form-control" value="{{ old('data_final', $pedido->data_final) }}" required>
             </div>
 
             <!-- Status -->
